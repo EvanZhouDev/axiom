@@ -1,0 +1,13 @@
+{
+  "name": "axiom",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ask": "bun modules/readonly/cli/index.ts",
+    "telegram": "bun modules/readonly/telegram/index.ts"
+  },
+  "dependencies": {
+    "@openai/codex-sdk": "0.141.0"
+  }
+}
