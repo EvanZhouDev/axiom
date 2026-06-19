@@ -48,6 +48,32 @@ TELEGRAM_BOT_TOKEN=... bun run telegram
 
 Edit `config.json` before using Telegram. Telegram denies everyone when the allowlists are empty.
 
+Telegram sends only Codex-authored messages back to chat.
+
 ## Raspberry Pi Setup
 
-On a Raspberry Pi, make the repo root, `package.json`, `config.json`, and `modules/readonly` root-owned and not writable by the service user. Make only `modules/writable` and `.axiom` writable by the service user.
+Make sure `.env` and `config.json` exist (see `.env.example` and `config.example.json`), then run:
+
+```sh
+bun run setup:pi
+```
+
+It does the following:
+
+- Creates a restricted `axiom` service user
+- Gives `axiom` ownership of only `.axiom` and `modules/writable`
+- Locks `modules/readonly` against `axiom` edits
+- Installs the `axiom-telegram` systemd service
+- Enables the service so it starts on boot
+
+Start the service:
+
+```sh
+sudo systemctl start axiom-telegram
+```
+
+Check that it's live:
+
+```sh
+sudo systemctl status axiom-telegram
+```

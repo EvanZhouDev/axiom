@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "ask": "bun modules/readonly/cli/index.ts",
-    "telegram": "bun modules/readonly/telegram/index.ts"
+    "telegram": "bun modules/readonly/telegram/index.ts",
+    "setup:pi": "sudo bash pi/setup.sh"
   },
   "dependencies": {
     "@openai/codex-sdk": "0.141.0"
