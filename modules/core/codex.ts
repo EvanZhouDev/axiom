@@ -88,25 +88,5 @@ function isMissingCodexThread(error: unknown) {
 }
 
 function codexEnv() {
-  const env: Record<string, string> = {};
-
-  for (const key of [
-    "HOME",
-    "PATH",
-    "SHELL",
-    "TERM",
-    "TMPDIR",
-    "USER",
-    "LOGNAME",
-    "CODEX_HOME",
-    "CODEX_API_KEY",
-    "OPENAI_API_KEY",
-  ]) {
-    const value = process.env[key];
-    if (value) {
-      env[key] = value;
-    }
-  }
-
-  return env;
+  return { ...process.env } as Record<string, string>;
 }
