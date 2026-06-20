@@ -1,6 +1,6 @@
 # Axiom
 
-Axiom is a minimal Codex-backed agent.
+Axiom is a minimal Codex-backed personal agent.
 
 ## Shape
 
@@ -9,22 +9,67 @@ axiom/
   README.md
   AGENTS.md
   package.json
-  config.json
 
   modules/
-    readonly/
-      core/
-      cli/
-      telegram/
+    core/
+      index.ts
+      codex.ts
+      state.json
+      README.md
 
-    writable/
+    telegram/
+      index.ts
+      start.ts
+      poll.ts
+      api.ts
+      state.json
+      README.md
+
+    secrets/
+      index.ts
+      pass.ts
+      README.md
+
+    cli/
+      index.ts
+      ask.ts
+      README.md
+
+    service/
+      index.ts
+      manage.ts
+      README.md
 ```
 
-`modules/readonly` is trusted code. It receives outside input, checks trust, and talks to Codex.
+Module convention: `index.ts` is the public callable surface and should have clear JSDoc for exported types/functions. Other files are named by what they do.
 
-`modules/writable` is the agent growth area. New capabilities belong there.
+Ingress modules do not automatically forward Codex output. Codex must manually send messages back to the ingress sources.
 
-Runtime state is created under `.axiom/`.
+## Secrets
+
+Axiom uses `pass`, the GPG-backed password store.
+
+Install and initialize `pass` on the Pi:
+
+```sh
+sudo apt install pass
+gpg --full-generate-key
+pass init "<your-gpg-key-id>"
+```
+
+Add the Telegram secrets:
+
+```sh
+pass insert axiom/telegram/bot-token
+pass insert axiom/telegram/allowed-user-ids
+pass insert axiom/telegram/allowed-chat-ids
+```
+
+The allowlist secrets can contain one ID or many IDs separated by newlines, spaces, or commas.
+
+For unattended boot, use a dedicated Axiom GPG key without a passphrase, or make sure `gpg-agent` can unlock the key for the service.
+
+Modules read only the named secret they need through `modules/secrets`.
 
 ## Local Use
 
@@ -40,40 +85,18 @@ Ask through the CLI ingress:
 bun run ask "what is your status?"
 ```
 
-Run Telegram polling:
+## Service
+
+Start the optional systemd service:
 
 ```sh
-TELEGRAM_BOT_TOKEN=... bun run telegram
+bun run service:start
 ```
 
-Edit `config.json` before using Telegram. Telegram denies everyone when the allowlists are empty.
-
-Telegram sends only Codex-authored messages back to chat.
-
-## Raspberry Pi Setup
-
-Make sure `.env` and `config.json` exist (see `.env.example` and `config.example.json`), then run:
+Restart, stop, or check it:
 
 ```sh
-bun run setup:pi
-```
-
-It does the following:
-
-- Creates a restricted `axiom` service user
-- Gives `axiom` ownership of only `.axiom` and `modules/writable`
-- Locks `modules/readonly` against `axiom` edits
-- Installs the `axiom-telegram` systemd service
-- Enables the service so it starts on boot
-
-Start the service:
-
-```sh
-sudo systemctl start axiom-telegram
-```
-
-Check that it's live:
-
-```sh
-sudo systemctl status axiom-telegram
+bun run service:restart
+bun run service:stop
+bun run service:status
 ```

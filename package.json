@@ -4,11 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ask": "bun modules/readonly/cli/index.ts",
-    "telegram": "bun modules/readonly/telegram/index.ts",
-    "setup:pi": "sudo bash pi/setup.sh"
+    "ask": "bun modules/cli/ask.ts",
+    "telegram": "bun modules/telegram/start.ts",
+    "service:start": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts start",
+    "service:stop": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts stop",
+    "service:restart": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts restart",
+    "service:status": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts status",
+    "service:uninstall": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts uninstall"
   },
   "dependencies": {
     "@openai/codex-sdk": "0.141.0"
+  },
+  "devDependencies": {
+    "bun-types": "^1.3.14"
   }
 }

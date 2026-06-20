@@ -1,4 +1,4 @@
 node_modules/
-.env
-.axiom/
+.env*
 config.json
+modules/*/state.json
