@@ -6,11 +6,11 @@
   "scripts": {
     "ask": "bun modules/cli/ask.ts",
     "telegram": "bun modules/telegram/start.ts",
-    "service:start": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts start",
-    "service:stop": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts stop",
-    "service:restart": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts restart",
-    "service:status": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts status",
-    "service:uninstall": "sudo env BUN=$(command -v bun) bun modules/service/manage.ts uninstall"
+    "service:start": "BUN_PATH=$(command -v bun) && sudo env BUN=\"$BUN_PATH\" \"$BUN_PATH\" modules/service/manage.ts start",
+    "service:stop": "BUN_PATH=$(command -v bun) && sudo env BUN=\"$BUN_PATH\" \"$BUN_PATH\" modules/service/manage.ts stop",
+    "service:restart": "BUN_PATH=$(command -v bun) && sudo env BUN=\"$BUN_PATH\" \"$BUN_PATH\" modules/service/manage.ts restart",
+    "service:status": "BUN_PATH=$(command -v bun) && sudo env BUN=\"$BUN_PATH\" \"$BUN_PATH\" modules/service/manage.ts status",
+    "service:uninstall": "BUN_PATH=$(command -v bun) && sudo env BUN=\"$BUN_PATH\" \"$BUN_PATH\" modules/service/manage.ts uninstall"
   },
   "dependencies": {
     "@openai/codex-sdk": "0.141.0"
